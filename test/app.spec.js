@@ -7,4 +7,5 @@ describe('App', () => {
       .get('/')
       .expect(200, 'Hello, Boilerplate!')
   })
+
 })

@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS saved_meal_plans;
