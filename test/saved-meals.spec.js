@@ -64,5 +64,34 @@ describe.only('saved meals endpoints', () =>{
                 expect(res.body).to.eql({error: 'Meal plan not found'})
             })
         })
+        it('responds 200 with meal plan by id', () => {
+            const expectedResponse = {
+
+            }
+            return supertest(app)
+            .get('/api/saved-meal-plans/1')
+            .set('Authorization', auth)
+            .expect(200)
+            .then(res => {
+                expect(res.body[0].meal_id).to.eql(1)
+            })
+        })
+
+    })
+    describe('delete plan endpoint', () => {
+        const usersArray = helpers.makeUsersArray()
+        const auth = helpers.makeAuthHeader(usersArray[0])
+        it('responds 200 deleted when a mealplan is deleted', () => {
+            return supertest(app)
+            .delete('/api/saved-meal-plans/1')
+            .set('Authorization', auth)
+            .expect(200, `Plan 1 deleted`)
+            .then(() => {
+                return supertest(app)
+                .get('/api/saved-meal-plans/1')
+                .set('Authorization', auth)
+                .expect(404)
+            })
+        })
     })
 })

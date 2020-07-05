@@ -21,10 +21,22 @@ savedMealsRouter
 .route('/:mealId')
 .all(requireAuth)
 .get(checkIfExists, (req, res) => {
-  const mealPlan = req.mealPlan
-     return res.status(200).json(mealPlan)
+  const mealId = req.mealId
+  const user = req.user
+  return SavedMealsService.getMealPlanDetails(req.app.get('db'), mealId, user)
+  .then(mealPlan => {
+    return res.status(200).json(mealPlan)
+  })
 })
+.delete(checkIfExists, (req, res) => {
+    const mealId = req.mealId
+    const user = req.user
+    return SavedMealsService.deleteMealPlan(req.app.get('db'), mealId, user)
+    .then(() => {
+        return res.status(200).send(`Plan ${mealId} deleted`)
+    })
 
+})
 async function checkIfExists(req, res, next) {
     try {
     const user = req.user.id
@@ -35,7 +47,7 @@ async function checkIfExists(req, res, next) {
         return res.status(404).json({error: 'Meal plan not found'})
     }
     req.user = user
-    req.mealPlan = mealPlan
+    req.mealId = mealId
     next()
     }
     catch(error) {
