@@ -71,8 +71,8 @@ function makeUsersArray() {
               meal_id: 1,
               meal_url: 'greatwebstie.com',
               meal_image: 'webiste.com',
-              dietLabels: 'Low-Fat, Low-Carb',
-              healthLabels: 'Vegetarian'
+              dietlabels: 'Low-Fat, Low-Carb',
+              healthlabels: 'Vegetarian'
           },
           {
             mealplan_id: 1,
@@ -80,8 +80,8 @@ function makeUsersArray() {
             meal_id: 2,
             meal_url: 'greatwebstie.com',
             meal_image: 'webiste.com',
-            dietLabels: 'Low-Fat, Low-Carb',
-            healthLabels: 'Vegetarian'
+            dietlabels: 'Low-Fat, Low-Carb',
+            healthlabels: 'Vegetarian'
         },
         {
             mealplan_id: 1,
@@ -89,35 +89,35 @@ function makeUsersArray() {
             meal_id: 3,
             meal_url: 'greatwebstie.com',
             meal_image: 'webiste.com',
-            dietLabels: 'Low-Fat, Low-Carb',
-            healthLabels: 'Vegetarian'
+            dietlabels: 'Low-Fat, Low-Carb',
+            healthlabels: 'Vegetarian'
         },
         {
             mealplan_id: 2,
             label: 'spaghetti',
-            meal_id: 1,
+            meal_id: 4,
             meal_url: 'greatwebstie.com',
             meal_image: 'webiste.com',
-            dietLabels: 'Low-Fat, Low-Carb',
-            healthLabels: 'Vegetarian'
+            dietlabels: 'Low-Fat, Low-Carb',
+            healthlabels: 'Vegetarian'
         },
         {
             mealplan_id: 2,
             label: 'chicken',
-            meal_id: 2,
+            meal_id: 5,
             meal_url: 'greatwebstie.com',
             meal_image: 'webiste.com',
-            dietLabels: 'Low-Fat, Low-Carb',
-            healthLabels: 'Vegetarian'
+            dietlabels: 'Low-Fat, Low-Carb',
+            healthlabels: 'Vegetarian'
         },
         {
             mealplan_id: 3,
             label: 'stuffed peppers',
-            meal_id: 1,
+            meal_id: 6,
             meal_url: 'greatwebstie.com',
             meal_image: 'webiste.com',
-            dietLabels: 'Low-Fat, Low-Carb',
-            healthLabels: 'Vegetarian'
+            dietlabels: 'Low-Fat, Low-Carb',
+            healthlabels: 'Vegetarian'
         }]
   }
   function seedUsers(db, users){
@@ -143,5 +143,9 @@ function makeUsersArray() {
   module.exports = {
     makeUsersArray,
     seedUsers,
-    makeAuthHeader
+    makeAuthHeader,
+    makePlans,
+    makeMeals,
+    seedSavedPlans,
+    seedMeals
   }
