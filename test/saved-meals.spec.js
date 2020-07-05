@@ -16,16 +16,7 @@ describe.only('saved meals endpoints', () =>{
     afterEach('clean tables', () => {
         return db.raw('TRUNCATE TABLE saved_meal_plans, saved_meals, users RESTART IDENTITY CASCADE')
     })
-    // describe('saved meal endpoints', () => {
-    //     const usersArray = helpers.makeUsersArray()
-    //     const auth = helpers.makeAuthHeader(usersArray[0])
-    //     it('responds 200 and sends an empty array when no meals are saved', () =>{
-    //         return supertest(app)
-    //         .get('/api/saved-meals')
-    //         .set('Authorization', auth)
-    //         .expect([])
-    //     })
-    // })
+
     beforeEach('seed users and meal plans', () => {
         const usersArray = helpers.makeUsersArray()
        return helpers.seedUsers(db, usersArray)
@@ -55,12 +46,22 @@ describe.only('saved meals endpoints', () =>{
               
             }
             return supertest(app)
-            .get('/api/saved-meals')
+            .get('/api/saved-meal-plans')
             .set('Authorization', auth)
             .expect(200)
             .then(res => {
                 expect(res.body[0]).to.be.an('object')
                 expect(res.body[0]).to.eql(expectedResponse)
+            })
+        })
+        it('responds 404 when mealplan id does not exist', () => {
+            const id = 098
+            return supertest(app)
+            .get(`/api/saved-meal-plans/123`)
+            .set('Authorization', auth)
+            .expect(404)
+            .then(res => {
+                expect(res.body).to.eql({error: 'Meal plan not found'})
             })
         })
     })

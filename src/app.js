@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
      })
 app.use('/api/users', usersRouter)
 app.use('/api/auth/login', authRouter)
-app.use('/api/saved-meals', savedMealsRouter)
+app.use('/api/saved-meal-plans', savedMealsRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response
