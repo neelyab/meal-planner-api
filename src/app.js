@@ -4,6 +4,9 @@ const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV, CLIENT_ORIGIN } = require('./config')
+const usersRouter = require('../users/users-router')
+const authRouter = require('../auth/auth-router')
+const savedMealsRouter = require('../saved-meals/saved-meals-router')
 
 const app = express()
 
@@ -20,6 +23,9 @@ app.use(cors({
 app.get('/', (req, res) => {
      res.send('Hello, Boilerplate!')
      })
+app.use('/api/users', usersRouter)
+app.use('/api/auth/login', authRouter)
+app.use('/api/saved-meals', savedMealsRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response
