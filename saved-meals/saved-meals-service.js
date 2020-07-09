@@ -21,7 +21,6 @@ const SavedMealsService = {
         .andWhere('saved_meal_plans.mealplan_id', id)
         .innerJoin('saved_meals', function() {
             this.on('saved_meal_plans.mealplan_id', '=', 'saved_meals.mealplan') })
-        // .rightOuterJoin('saved_meals AS saved', 'plans.mealplan_id', 'saved.mealplan')
     },
     deleteMealPlan(db, id, user){
         return db.from('saved_meal_plans AS plans')
@@ -31,27 +30,22 @@ const SavedMealsService = {
         .del()
     },
     saveNewMealPlan(db, savedMealPlan, meals){
-            // async knex transaction to insert savedMealPlan and then all of the meals into saved_meals
             let savedMeals = meals;
-            // console.log(savedMeals)
-            return db.transaction(trx => {
-                // insert savedMealPlan which includes name and user id
-                return trx
-                .insert(savedMealPlan)
-                .into('saved_meal_plans')
-                .returning('*')
-                .then((plan) => {
-                    console.log(plan)
-                    const id = plan[0].mealplan_id
-                 savedMeals.map(meal => {
+            return db.insert(savedMealPlan)
+            .into('saved_meal_plans')
+            .returning('*')
+            .then(([plan]) => {
+                const id = plan.mealplan_id
+                    savedMeals.map(meal => {
                         meal.mealplan = id
-                        console.log(meal);
-                        return trx('saved_meals').insert(meal);
                     })
-                })
-                .then(meals => console.log(meals))
-                .catch(err => console.log(err))
+                    return savedMeals;
             })
+            .then(savedMeals => SavedMealsService.saveMeals(db,savedMeals))
+            
+    },
+    saveMeals(db, savedMeals){
+            return db('saved_meals').insert(savedMeals).returning('*')
     }
 }
 

@@ -17,38 +17,41 @@ savedMealsRouter
         return res.status(200).json(meal)
     })
 })
-.post(jsonBodyParser, (req, res) => {
+.post(jsonBodyParser, (req, res, next) => {
     const user = req.user.id
     const {name} = req.body;
     const meals = req.body.meals;
     // check to see if name and meals array are present
     if (!name || !meals) {
         return res.status(400).json({error: `name and array of meals must be present in request body`})
+    } 
+    let error;
+    meals.forEach(meal => {
+    for (const field of ['meal_image', 'meal_url', 'label']){
+        if (!meal[field]){
+            error = `Missing ${field}`
+        }
+            }
+    for (const [key, value] of Object.entries(meal)){
+        if (value === null) {
+           error = `Missing ${value}`
+        }
+    }
+    })
+    if (error){
+        return res.status(400).json({error})
     }
     // make an object for the saved meal plan
     const savedMealPlan = {
         mealplan_name: name,
         user_id: user
     }
-    // check to make sure that 
-    // for (const [key, value] of Object.entries(savedMeal)){
-    //     if (value === null) {
-    //         res.status(400).json({error: `please enter a value for ${key}`})
-    //     }
-    // }
-   // check to make sure all fields are present in the meals array
-    meals.map(meal => {
-        for (const field of ['meal_image', 'meal_url', 'label']){
-            if (!meal[field]){
-                return res.status(400).json({error: `Missing ${field}`})
-            }
-        }
-    })
     
-    return SavedMealsService.saveNewMealPlan(req.app.get('db'), savedMealPlan, meals, user)
-    .then(() => {
-        return res.status(204).send(`Meal plan saved`)
+    SavedMealsService.saveNewMealPlan(req.app.get('db'), savedMealPlan, meals, user)
+    .then((meals) => {
+        return res.status(201).json({name: savedMealPlan.mealplan_name, meals})
     })
+    .catch(next)
 })
 
 // mealplan by id route
