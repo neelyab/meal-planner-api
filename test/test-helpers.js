@@ -35,28 +35,26 @@ function makeUsersArray() {
   }
   function makePlans() {
       return [
-        {
-          mealplan_id: 1,
-          user_id: 1,
+        {         user_id: 1,
           mealplan_name: 'keto mealplan'
         },
         {
-            mealplan_id: 2,
+            
             user_id: 1,
             mealplan_name: 'veggie mealplan'
         },
         {
-            mealplan_id: 3,
+            
             user_id: 2,
             mealplan_name: 'this weeks mealplan'
         },
         {
-            mealplan_id: 4,
+           
             user_id: 2,
             mealplan_name: 'tuesday mealplan'
         },
         {
-            mealplan_id: 5,
+           
             user_id: 2,
             mealplan_name: 'paleo mealplan'
         },
@@ -66,54 +64,48 @@ function makeUsersArray() {
   function makeMeals() {
       return [
           {
-              mealplan_id: 1,
+              mealplan: 1,
               label: 'keto nachos',
-              meal_id: 1,
               meal_url: 'greatwebstie.com',
               meal_image: 'webiste.com',
               dietlabels: 'Low-Fat, Low-Carb',
               healthlabels: 'Vegetarian'
           },
           {
-            mealplan_id: 1,
+            mealplan: 1,
             label: 'eggplant',
-            meal_id: 2,
             meal_url: 'greatwebstie.com',
             meal_image: 'webiste.com',
             dietlabels: 'Low-Fat, Low-Carb',
             healthlabels: 'Vegetarian'
         },
         {
-            mealplan_id: 1,
+            mealplan: 1,
             label: 'muffins',
-            meal_id: 3,
             meal_url: 'greatwebstie.com',
             meal_image: 'webiste.com',
             dietlabels: 'Low-Fat, Low-Carb',
             healthlabels: 'Vegetarian'
         },
         {
-            mealplan_id: 2,
+            mealplan: 2,
             label: 'spaghetti',
-            meal_id: 4,
             meal_url: 'greatwebstie.com',
             meal_image: 'webiste.com',
             dietlabels: 'Low-Fat, Low-Carb',
             healthlabels: 'Vegetarian'
         },
         {
-            mealplan_id: 2,
+            mealplan: 2,
             label: 'chicken',
-            meal_id: 5,
             meal_url: 'greatwebstie.com',
             meal_image: 'webiste.com',
             dietlabels: 'Low-Fat, Low-Carb',
             healthlabels: 'Vegetarian'
         },
         {
-            mealplan_id: 3,
+            mealplan: 3,
             label: 'stuffed peppers',
-            meal_id: 6,
             meal_url: 'greatwebstie.com',
             meal_image: 'webiste.com',
             dietlabels: 'Low-Fat, Low-Carb',

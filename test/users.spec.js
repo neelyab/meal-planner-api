@@ -115,7 +115,7 @@ describe('Embroidery User endpoints', () => {
             })
         })
     })
-    describe ('new user registration success', () => {
+    describe('new user registration success', () => {
         context('POST /users posts new user into database and returns user information in json response', () => {
             const newUser = {
                 username: 'admin',

@@ -3,7 +3,7 @@ const app = require('../src/app')
 const knex = require('knex')
 const {expect} = require('chai')
 
-describe.only('saved meals endpoints', () =>{
+describe('saved meals endpoints', () =>{
     const db = knex({
         client: 'pg',
         connection: process.env.TEST_DATABASE_URL
@@ -40,6 +40,7 @@ describe.only('saved meals endpoints', () =>{
                         meal_id: 1,
                         meal_image: "webiste.com",
                         meal_url: "greatwebstie.com",
+                        mealplan: 1,
                         mealplan_id: 1,
                         mealplan_name: "keto mealplan",
                         user_id: 1
@@ -65,15 +66,13 @@ describe.only('saved meals endpoints', () =>{
             })
         })
         it('responds 200 with meal plan by id', () => {
-            const expectedResponse = {
-
-            }
             return supertest(app)
             .get('/api/saved-meal-plans/1')
             .set('Authorization', auth)
             .expect(200)
             .then(res => {
-                expect(res.body[0].meal_id).to.eql(1)
+                expect(res.body[0].mealplan_id).to.eql(1)
+                expect(res.body[0].label).to.eql('keto nachos')
             })
         })
 
@@ -93,5 +92,46 @@ describe.only('saved meals endpoints', () =>{
                 .expect(404)
             })
         })
+    })
+    describe.only('POST new meal plan', () => {
+        const usersArray = helpers.makeUsersArray()
+        const auth = helpers.makeAuthHeader(usersArray[0])
+        const name = 'sdfasdf'
+        const meals = [{
+            label: 'keto nachos',
+            meal_url: 'greatwebstie.com',
+            meal_image: 'webiste.com',
+            dietlabels: 'Low-Fat, Low-Carb',
+            healthlabels: 'Vegetarian'
+        },
+        {
+          label: 'eggplant',
+          meal_url: 'greatwebstie.com',
+          meal_image: 'webiste.com',
+          dietlabels: 'Low-Fat, Low-Carb',
+          healthlabels: 'Vegetarian'
+      }]
+      const reqBody = {
+          name,
+          meals
+      }
+      it('responds 200 and mealplan created when successful ', () =>{
+          return supertest(app)
+          .post('/api/saved-meal-plans')
+          .set('Authorization', auth)
+          .send(reqBody)
+          .expect(204)
+          .then(() => {
+              return supertest(app)
+              .get('/api/saved-meal-plans/6')
+              .set('Authorization', auth)
+              .expect(200)
+              .then(res => {
+                  expect(res.body.mealplan_id).to.eql(6)
+              })
+          })
+          
+      })
+
     })
 })
