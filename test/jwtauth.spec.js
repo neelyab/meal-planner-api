@@ -3,7 +3,7 @@ const app = require('../src/app')
 const knex = require('knex')
 const helpers = require('./test-helpers')
 
-describe('Authentication Endpoint', () => {
+describe.only('Authentication Endpoint', () => {
     let db;
     before('make connection', () => {
         db = knex({
@@ -19,14 +19,14 @@ describe('Authentication Endpoint', () => {
     afterEach('clean up table', () => {
        return db.raw('TRUNCATE TABLE saved_meal_plans, saved_meals, users RESTART IDENTITY CASCADE;')
     })
-    context('Bearer Token', () =>{
+    context('Bearer Token', () => {
         beforeEach('seed users', () => {
             const usersArray = helpers.makeUsersArray()
            return helpers.seedUsers(db, usersArray)
         })
         it('header without bearer token returns 401 unauthorized', () => {
             return supertest(app)
-            .get('/api/saved-meals')
+            .get('/api/saved-meal-plans')
             .expect(401, {error: 'Missing bearer token'})
         })
         const invalidUser = {
@@ -36,7 +36,7 @@ describe('Authentication Endpoint', () => {
         }
         it('header with invalid bearer token returns 401 unauthorized', () => {
             return supertest(app)
-            .get('/api/saved-meals')
+            .get('/api/saved-meal-plans')
             .set('Authorization', helpers.makeAuthHeader(invalidUser))
             .expect(401)
         })
@@ -55,7 +55,7 @@ describe('Authentication Endpoint', () => {
               algorithm: 'HS256',
             }
           )
-        it('POST /api/auth/login returns 200 when successful login', () => {
+        it.only('POST /api/auth/login returns 200 when successful login', () => {
             return supertest(app)
             .post('/api/auth/login')
             .send(loginAttempt)

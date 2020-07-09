@@ -6,7 +6,7 @@ const {expect} = require('chai')
 const usersArray = helpers.makeUsersArray()
 
 
-describe('Embroidery User endpoints', () => {
+describe.only('Embroidery User endpoints', () => {
     let db
     before('make knex instance', () =>{
         db = knex({
