@@ -16,13 +16,8 @@ const morganOption = (NODE_ENV === 'production')
 
 app.use(morgan(morganOption))
 app.use(helmet())
-app.use(cors({
-    origin: CLIENT_ORIGIN
-}))
+app.use(cors())
 
-app.get('/', (req, res) => {
-     res.send('Hello, Boilerplate!')
-     })
 app.use('/api/users', usersRouter)
 app.use('/api/auth/login', authRouter)
 app.use('/api/saved-meal-plans', savedMealsRouter)
