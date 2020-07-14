@@ -6,7 +6,7 @@ const {expect} = require('chai')
 const usersArray = helpers.makeUsersArray()
 
 
-describe.only('Embroidery User endpoints', () => {
+describe('User endpoints', () => {
     let db
     before('make knex instance', () =>{
         db = knex({
@@ -15,6 +15,7 @@ describe.only('Embroidery User endpoints', () => {
         })
         app.set('db', db)
     })
+    after('destroy connection', () => db.destroy())
     before('clean tables', () => {
        return db.raw('TRUNCATE TABLE saved_meal_plans, saved_meals, users RESTART IDENTITY CASCADE')
     })

@@ -12,9 +12,34 @@ savedMealsRouter
 .all(requireAuth)
 .get((req, res) => {
     const user = req.user.id
-    return SavedMealsService.getAllSavedMeals(req.app.get('db'), user)
-    .then(meal => {
-        return res.status(200).json(meal)
+    let mealIds;
+    let sortedMealPlans = [];
+    let responseObject = [];
+    // get unique meal ids
+    return SavedMealsService.getSavedMealIds(req.app.get('db'), user)
+    .then(ids => {
+        //push meal ids into an array to use later 
+        mealIds = ids.map(id=> id.mealplan_id)
+        console.log(mealIds)
+        // get all the saved meals
+        return SavedMealsService.getAllSavedMeals(req.app.get('db'), user)
+        .then(mealPlan => {  
+            mealIds.map(id => {
+                //filter meal plans by id, push to sortedMealPlans array
+                sortedMealPlans.push(mealPlan.filter(meal => id === meal.mealplan_id))
+                console.log(sortedMealPlans)
+                sortedMealPlans.map(meals => {
+                    console.log(meals[0].mealplan_name)
+                    const mealPlanById = {
+                        name: meals[0].mealplan_name,
+                        meals: sortedMealPlans
+                    }
+                    responseObject.push(mealPlanById)
+                    console.log(responseObject)
+                })
+            })
+        })
+        .then( () => res.status(200).json(responseObject))
     })
 })
 .post(jsonBodyParser, (req, res, next) => {
@@ -63,6 +88,7 @@ savedMealsRouter
   const user = req.user
   return SavedMealsService.getMealPlanDetails(req.app.get('db'), mealId, user)
   .then(mealPlan => {
+      
     return res.status(200).json(mealPlan)
   })
 })

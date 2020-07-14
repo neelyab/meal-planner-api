@@ -4,12 +4,15 @@ const knex = require('knex')
 const {expect} = require('chai')
 
 describe('saved meals endpoints', () =>{
-    const db = knex({
-        client: 'pg',
-        connection: process.env.TEST_DATABASE_URL
+    let db;
+    before('make connection', () => {
+        db = knex({
+            client: 'pg',
+            connection: process.env.TEST_DATABASE_URL,
+        })
+        app.set('db', db)
     })
-    app.set('db', db)
-
+    after('destroy connection', () => db.destroy())
     before('clean tables', () =>{
         return db.raw('TRUNCATE TABLE saved_meal_plans, saved_meals, users RESTART IDENTITY CASCADE')
     })

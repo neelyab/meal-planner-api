@@ -4,15 +4,19 @@ const knex = require('knex')
 const {expect} = require('chai')
 
 describe('POST new meal plan', () => {
-    const db = knex({
-        client: 'pg',
-        connection: process.env.TEST_DATABASE_URL
+    let db;
+    before('make connection', () => {
+        db = knex({
+            client: 'pg',
+            connection: process.env.TEST_DATABASE_URL,
+        })
+        app.set('db', db)
     })
-    app.set('db', db)
-
+    after('destroy connection', () => db.destroy())
     before('clean tables', () =>{
         return db.raw('TRUNCATE TABLE saved_meal_plans, saved_meals, users RESTART IDENTITY CASCADE')
     })
+    after('destroy connection', () => db.destroy())
     afterEach('clean tables', () => {
         return db.raw('TRUNCATE TABLE saved_meal_plans, saved_meals, users RESTART IDENTITY CASCADE')
     })
@@ -44,6 +48,7 @@ describe('POST new meal plan', () => {
   }
   context('post endpoint', () => {
     it('responds 200 and mealplan created when successful ', () =>{
+        console.log('running test saved-meal mealplan created')
         return supertest(app)
         .post('/api/saved-meal-plans/')
         .set('Authorization', auth)
@@ -66,6 +71,7 @@ describe('POST new meal plan', () => {
                 healthlabels: 'Vegetarian'
             }
         it('responds 400', () => {
+            console.log('running test saved-meal missing field')
             delete meal[field];
             return supertest(app)
             .post('/api/saved-meal-plans/')
@@ -84,6 +90,7 @@ describe('POST new meal plan', () => {
             healthlabels: 'Vegetarian'
         }
         it('responds 400 when name is missing', () => {
+            console.log('running test saved-meal name missing')
             return supertest(app)
             .post('/api/saved-meal-plans/')
             .set('Authorization', auth)

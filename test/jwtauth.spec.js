@@ -3,7 +3,7 @@ const app = require('../src/app')
 const knex = require('knex')
 const helpers = require('./test-helpers')
 
-describe.only('Authentication Endpoint', () => {
+describe('Authentication Endpoint', () => {
     let db;
     before('make connection', () => {
         db = knex({
@@ -12,10 +12,11 @@ describe.only('Authentication Endpoint', () => {
         })
         app.set('db', db)
     })
-    after('destroy connection', () => db.destroy())
+    // after('destroy connection', () => db.destroy())
     before('clean up table', () =>{
         return db.raw('TRUNCATE TABLE saved_meal_plans, saved_meals, users RESTART IDENTITY CASCADE;')
     })
+    after('destroy connection', () => db.destroy())
     afterEach('clean up table', () => {
        return db.raw('TRUNCATE TABLE saved_meal_plans, saved_meals, users RESTART IDENTITY CASCADE;')
     })
@@ -24,7 +25,8 @@ describe.only('Authentication Endpoint', () => {
             const usersArray = helpers.makeUsersArray()
            return helpers.seedUsers(db, usersArray)
         })
-        it('header without bearer token returns 401 unauthorized', () => {
+        it.skip('header without bearer token returns 401 unauthorized', () => {
+            console.log('jwt 401 unauthorized')
             return supertest(app)
             .get('/api/saved-meal-plans')
             .expect(401, {error: 'Missing bearer token'})
@@ -35,6 +37,7 @@ describe.only('Authentication Endpoint', () => {
             password: 'password'
         }
         it('header with invalid bearer token returns 401 unauthorized', () => {
+            console.log('jwt invalid bearer token 401 unauthorized')
             return supertest(app)
             .get('/api/saved-meal-plans')
             .set('Authorization', helpers.makeAuthHeader(invalidUser))
@@ -55,13 +58,15 @@ describe.only('Authentication Endpoint', () => {
               algorithm: 'HS256',
             }
           )
-        it.only('POST /api/auth/login returns 200 when successful login', () => {
+        it('POST /api/auth/login returns 200 when successful login', () => {
+            console.log('jwt successful login')
             return supertest(app)
             .post('/api/auth/login')
             .send(loginAttempt)
             .expect(200, { authToken: expectedToken})
         })
         it('POST /api/auth/login returns 400 when incorrect user', () => {
+            console.log('jwt incorrect user')
             return supertest(app)
             .post('/api/auth/login')
             .send(invalidUser)
@@ -72,6 +77,7 @@ describe.only('Authentication Endpoint', () => {
             password: 'invalid'
         }
         it('POST /api/auth/login returns 400 when the correct username is present but invalid password', () => {
+            console.log('jwt invalid password')
             return supertest(app)
             .post('/api/auth/login')
             .send(wrongPassword)
@@ -82,6 +88,7 @@ describe.only('Authentication Endpoint', () => {
             password: null
         }
         it('POST /api/auth/login returns 400 when no password is present', () => {
+            console.log('jwt no password')
             return supertest(app)
             .post('/api/auth/login')
             .send(missingPassword)

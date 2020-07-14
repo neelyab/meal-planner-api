@@ -1,10 +1,27 @@
+const Treeize = require('treeize')
+
 const SavedMealsService = {
     getAllSavedMeals(db, user){
         return db.from('saved_meal_plans AS plans')
-        .select('*')
+        .select(
+           'plans.user_id',
+           'plans.mealplan_id',
+           'plans.mealplan_name',
+           'saved.label',
+           'saved.meal_url',
+           'saved.meal_image',
+           'saved.dietlabels',
+           'saved.healthlabels'
+            )
         .where('plans.user_id', user)
-        .rightJoin('saved_meals', 'saved_meals.mealplan', 'plans.mealplan_id')
+        .leftJoin('saved_meals AS saved', 'plans.mealplan_id', 'saved.mealplan')
+
     },
+   getSavedMealIds(db, user){
+       return db.from('saved_meal_plans')
+       .select('mealplan_id')
+       .where('user_id', user)
+       },
     getMealPlanById(db, id, user){
         return db.from('saved_meal_plans AS plans')
         .select('*')
