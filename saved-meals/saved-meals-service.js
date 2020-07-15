@@ -7,6 +7,7 @@ const SavedMealsService = {
            'plans.user_id',
            'plans.mealplan_id',
            'plans.mealplan_name',
+           'saved.meal_id',
            'saved.label',
            'saved.meal_url',
            'saved.meal_image',

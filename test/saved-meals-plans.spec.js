@@ -98,6 +98,19 @@ describe('POST new meal plan', () => {
             .expect(400, {error: "name and array of meals must be present in request body"})
         })
     })
+    context('missing array of meals', () => {
+        const mealplan = {
+            name: 'mealplan',
+            meals: []
+        }
+        it('responds 400 when no meals are present in meal array', () => {
+            return supertest(app)
+            .post('/api/saved-meal-plans/')
+            .set('Authorization', auth)
+            .send(mealplan)
+            .expect(400, {error:"name and array of meals must be present in request body"})
+        })
+    })
 
   })
 })

@@ -13,29 +13,25 @@ savedMealsRouter
 .get((req, res) => {
     const user = req.user.id
     let mealIds;
-    let sortedMealPlans = [];
     let responseObject = [];
     // get unique meal ids
     return SavedMealsService.getSavedMealIds(req.app.get('db'), user)
     .then(ids => {
         //push meal ids into an array to use later 
         mealIds = ids.map(id=> id.mealplan_id)
-        console.log(mealIds)
         // get all the saved meals
         return SavedMealsService.getAllSavedMeals(req.app.get('db'), user)
         .then(mealPlan => {  
             mealIds.map(id => {
                 //filter meal plans by id, push to sortedMealPlans array
+                let sortedMealPlans = [];
                 sortedMealPlans.push(mealPlan.filter(meal => id === meal.mealplan_id))
-                console.log(sortedMealPlans)
                 sortedMealPlans.map(meals => {
-                    console.log(meals[0].mealplan_name)
                     const mealPlanById = {
                         name: meals[0].mealplan_name,
-                        meals: sortedMealPlans
+                        meals: sortedMealPlans[0]
                     }
                     responseObject.push(mealPlanById)
-                    console.log(responseObject)
                 })
             })
         })
@@ -47,7 +43,7 @@ savedMealsRouter
     const {name} = req.body;
     const meals = req.body.meals;
     // check to see if name and meals array are present
-    if (!name || !meals) {
+    if (!name || !meals || meals.length === 0) {
         return res.status(400).json({error: `name and array of meals must be present in request body`})
     } 
     let error;
@@ -59,7 +55,7 @@ savedMealsRouter
             }
     for (const [key, value] of Object.entries(meal)){
         if (value === null) {
-           error = `Missing ${value}`
+           error = `Missing value for ${key}`
         }
     }
     })

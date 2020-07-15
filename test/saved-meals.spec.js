@@ -36,26 +36,27 @@ describe('saved meals endpoints', () =>{
         const usersArray = helpers.makeUsersArray()
         const auth = helpers.makeAuthHeader(usersArray[0])
         it('responds 200 with array of mealplans', () => {
-            const expectedResponse = {
-                        dietlabels: "Low-Fat, Low-Carb",
-                        healthlabels: "Vegetarian",
-                        label: "keto nachos",
-                        meal_id: 1,
-                        meal_image: "webiste.com",
-                        meal_url: "greatwebstie.com",
-                        mealplan: 1,
-                        mealplan_id: 1,
-                        mealplan_name: "keto mealplan",
-                        user_id: 1
-              
-            }
+            const expectedResponse = 
+                      {
+                       "dietlabels": "Low-Fat, Low-Carb",
+                        "healthlabels": "Vegetarian",
+                        "label": "keto nachos",
+                        "meal_id": 1,
+                        "meal_image": "webiste.com",
+                        "meal_url": "greatwebstie.com",
+                        "mealplan_id": 1,
+                        "mealplan_name": "keto mealplan",
+                        "user_id": 1,
+                      }
+          
             return supertest(app)
             .get('/api/saved-meal-plans')
             .set('Authorization', auth)
             .expect(200)
             .then(res => {
                 expect(res.body[0]).to.be.an('object')
-                expect(res.body[0]).to.eql(expectedResponse)
+                expect(res.body[0].meals[0]).to.eql(expectedResponse)
+                expect(res.body[0].name).to.eql('keto mealplan')
             })
         })
         it('responds 404 when mealplan id does not exist', () => {
