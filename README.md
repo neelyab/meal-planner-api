@@ -22,9 +22,9 @@ https://meal-planner-app-eight.vercel.app/
 
 ![ search results screen](./src/img/meal-planner-search.jpg)
 
-![ save a meal plan screen](./src/meal-planner-save.JPG)
+![ save a meal plan screen](./src/img/meal-planner-save.JPG)
 
-![ saved meal plans screen](./src/meal-planner-saved-meals.jpg)
+![ saved meal plans screen](./src/img/meal-planner-saved-meals.jpg)
 
 
 # API Documentation 
