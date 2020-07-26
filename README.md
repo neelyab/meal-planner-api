@@ -63,6 +63,7 @@ Each request must include  `content-type: application/json` and `Authorization: 
 * must be formatted as an object with 'name' as a string and 'meals' as an array of objects. Each meal must include `meal_image` `meal_url`, and `meal_label` 
 * OPTIONAL in each meal are: `dietlabels`, `healthlabels`
 * EXAMPLE: 
+
      ```const meal = { 
          name: 'meal plan',
          meals: [{
