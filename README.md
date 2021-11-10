@@ -22,9 +22,9 @@ https://meal-planner-app-eight.vercel.app/
 
 ![ search results screen](./src/img/meal-planner-search.jpg)
 
-![ save a meal plan screen](./src/meal-planner-save.JPG)
+![ save a meal plan screen](./src/img/meal-planner-save.JPG)
 
-![ saved meal plans screen](./src/meal-planner-saved-meals.jpg)
+![ saved meal plans screen](./src/img/meal-planner-saved-meals.jpg)
 
 
 # API Documentation 
@@ -63,11 +63,13 @@ Each request must include  `content-type: application/json` and `Authorization: 
 * must be formatted as an object with 'name' as a string and 'meals' as an array of objects. Each meal must include `meal_image` `meal_url`, and `meal_label` 
 * OPTIONAL in each meal are: `dietlabels`, `healthlabels`
 * EXAMPLE: 
-     ```const meal = { 
+```     
+const meal = { 
          name: 'meal plan',
          meals: [{
              meal_image: 'www.image.com',
              meal_url: 'www.url.com',
              meal_label: 'Lasagna'
           }]
-     }```
+     }
+     ```
