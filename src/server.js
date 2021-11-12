@@ -4,10 +4,9 @@ const knex = require('knex')
 
 const db = knex({
     client: 'pg',
-    connection: { DATABASE_URL,
-    ssl: true
-}
+    connection: process.env.DATABASE_URL,
 })
+
 
 app.set('db', db)
 
